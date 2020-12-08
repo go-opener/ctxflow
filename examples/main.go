@@ -31,6 +31,7 @@ func main() {
         demoGroup.POST("/testGetUserList", ctxflow.UseController(new(demo.TestGetUserList)))
         demoGroup.POST("/testAddUser", ctxflow.UseController(new(demo.TestAddUser)))
         demoGroup.POST("/testHttpGet", ctxflow.UseController(new(demo.TestHttpGet)))
+        demoGroup.POST("/panic", ctxflow.UseController(new(demo.TestPanic)))
     }
     engine.Run("0.0.0.0:8989")
 }

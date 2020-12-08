@@ -17,7 +17,7 @@ func (entity *Baidu)PreUse(args ...interface{}){
     entity.Api.PreUse(args...)
 }
 
-// 获取试卷信息
+// 获取demo内容
 func (entity *Baidu)GetLiveStat() (map[string]interface{}, error) {
     params := map[string]string{
         "fids":"",
