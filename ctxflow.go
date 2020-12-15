@@ -58,15 +58,17 @@ func UseController(controller layer.IController) func(ctx *gin.Context) {
             zap.String("localIp", logCtx.LocalIp),
         ))
 
-        defer func() {
-            if err:=recover();err!=nil{
-                stack := PanicTrace(4) //4KB
-                ctl.GetLog().Errorf("[controller panic]:%+v,stack:%s",err,string(stack))
-            }
-        }()
+        defer NoPanic(ctl)
 
         ctl.PreUse()
         ctl.Action()
+    }
+}
+
+func NoPanic(flow layer.IFlow){
+    if err:=recover();err!=nil{
+        stack := PanicTrace(4) //4KB
+        flow.GetLog().Errorf("[controller panic]:%+v,stack:%s",err,string(stack))
     }
 }
 
