@@ -1,8 +1,11 @@
 package demo
 
 import (
-    //"fmt"
+    //"github.com/go-opener/ctxflow"
+    "fmt"
+    "github.com/go-opener/ctxflow"
     "github.com/go-opener/ctxflow/layer"
+    //"fmt"
 )
 
 type TestPanic struct {
@@ -10,5 +13,8 @@ type TestPanic struct {
 }
 
 func (entity *TestPanic) Action() {
-    panic("wrong!")
+
+    fmt.Printf("%+v",string(ctxflow.StackTrace()))
+    entity.RenderJsonSucc("sss")
+    //panic("wrong!")
 }

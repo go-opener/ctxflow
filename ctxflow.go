@@ -3,6 +3,7 @@ package ctxflow
 import (
     "bytes"
     "encoding/json"
+    "errors"
     "runtime"
 
     "github.com/gin-gonic/gin"
@@ -58,10 +59,18 @@ func UseController(controller layer.IController) func(ctx *gin.Context) {
             zap.String("localIp", logCtx.LocalIp),
         ))
 
-        defer NoPanic(ctl)
+        defer NoPanicContorller(ctl)
 
         ctl.PreUse()
         ctl.Action()
+    }
+}
+
+func NoPanicContorller(ctl layer.IController){
+    if err:=recover();err!=nil{
+        stack := PanicTrace(4) //4KB
+        ctl.GetLog().Errorf("[controller panic]:%+v,stack:%s",err,string(stack))
+        ctl.RenderJsonFail(errors.New("异常错误！"))
     }
 }
 
@@ -70,6 +79,27 @@ func NoPanic(flow layer.IFlow){
         stack := PanicTrace(4) //4KB
         flow.GetLog().Errorf("[controller panic]:%+v,stack:%s",err,string(stack))
     }
+}
+
+func StackTrace() []byte {
+    e := []byte("\ngoroutine ")
+    line := []byte("\n")
+    stack := make([]byte, 4<<10) //4KB
+    length := runtime.Stack(stack, true)
+    stack = stack[0:length]
+    start := bytes.Index(stack, line) + 1
+    stack = stack[start:]
+    end := bytes.LastIndex(stack, line)
+    if end != -1 {
+        stack = stack[:end]
+    }
+    end = bytes.Index(stack, e)
+    if end != -1 {
+        stack = stack[:end]
+    }
+    stack = bytes.TrimRight(stack, "\n")
+
+    return stack
 }
 
 func PanicTrace(kb int) []byte {

@@ -27,6 +27,10 @@ type IController interface {
     IFlow
     BindParam(req interface{}) bool
     Action()
+    RenderJsonFail(err error)
+    RenderJsonSucc(data interface{})
+    RenderJsonAbort(err error)
+    RenderHttpError(errNo int, errDetail ...interface{})
 }
 
 type Controller struct {
