@@ -2,7 +2,7 @@ package domUser
 
 import (
     "examples/dao/daoUser"
-    "github.com/go-opener/ctxflow/layer"
+    "github.com/go-opener/ctxflow/v2/layer"
 )
 
 type UserDomain struct {

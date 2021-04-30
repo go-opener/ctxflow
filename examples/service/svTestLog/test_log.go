@@ -2,7 +2,7 @@ package svTestLog
 
 import (
     "examples/domain/domTestLog"
-    "github.com/go-opener/ctxflow/layer"
+    "github.com/go-opener/ctxflow/v2/layer"
 )
 
 type TestLogService struct {

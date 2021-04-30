@@ -4,7 +4,7 @@ import (
     "gorm.io/gorm"
     "gorm.io/gorm/logger"
     "reflect"
-    "github.com/go-opener/ctxflow/puzzle"
+    "github.com/go-opener/ctxflow/v2/puzzle"
     "fmt"
     "regexp"
 )

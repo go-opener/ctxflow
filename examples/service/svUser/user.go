@@ -4,8 +4,8 @@ import (
     "examples/dao/daoUser"
     "examples/domain/domUser"
     "examples/dto/dtoUser"
-    "github.com/go-opener/ctxflow/layer"
-    "github.com/go-opener/ctxflow/puzzle"
+    "github.com/go-opener/ctxflow/v2/layer"
+    "github.com/go-opener/ctxflow/v2/puzzle"
     "gorm.io/gorm"
 )
 

@@ -1,6 +1,6 @@
 package domTestLog
 
-import "github.com/go-opener/ctxflow/layer"
+import "github.com/go-opener/ctxflow/v2/layer"
 
 type TestLogDomain struct {
     layer.Domain

@@ -4,7 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     "go.uber.org/zap"
     "math"
-    "github.com/go-opener/ctxflow/puzzle"
+    "github.com/go-opener/ctxflow/v2/puzzle"
 )
 
 type IFlow interface {

@@ -20,7 +20,7 @@ import (
     "sync"
     "time"
     "unsafe"
-    "github.com/go-opener/ctxflow/puzzle"
+    "github.com/go-opener/ctxflow/v2/puzzle"
 )
 
 const (

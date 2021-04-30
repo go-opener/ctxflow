@@ -10,7 +10,7 @@ import (
     "net/http"
     "reflect"
     "unsafe"
-    "github.com/go-opener/ctxflow/puzzle"
+    "github.com/go-opener/ctxflow/v2/puzzle"
 )
 
 

@@ -3,7 +3,7 @@ package demo
 import (
     //"fmt"
     "examples/service/svTestLog"
-    "github.com/go-opener/ctxflow/layer"
+    "github.com/go-opener/ctxflow/v2/layer"
 )
 
 type TestLog struct {

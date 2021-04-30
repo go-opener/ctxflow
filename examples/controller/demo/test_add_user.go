@@ -4,7 +4,7 @@ import (
     "examples/dto/dtoUser"
     "examples/service/svUser"
     "github.com/apache/thrift/lib/go/thrift"
-    "github.com/go-opener/ctxflow/layer"
+    "github.com/go-opener/ctxflow/v2/layer"
 )
 
 type TestAddUser struct {
