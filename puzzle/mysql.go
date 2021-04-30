@@ -1,6 +1,6 @@
 package puzzle
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 var MysqlClient *gorm.DB
 func SetDefaultGormDb(db *gorm.DB){
     MysqlClient = db

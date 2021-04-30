@@ -6,12 +6,12 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/go-opener/ctxflow"
     "github.com/go-opener/ctxflow/puzzle"
-    "github.com/jinzhu/gorm"
+    "gorm.io/driver/mysql"
+    "gorm.io/gorm"
     "go.uber.org/zap"
     "go.uber.org/zap/zapcore"
     "os"
     "time"
-    _ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -37,22 +37,38 @@ func main() {
 }
 
 func getDBClient(log *zap.SugaredLogger) (*gorm.DB, error) {
-    client, err := gorm.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?timeout=%s&readTimeout=%s&writeTimeout=%s&parseTime=True&loc=Asia%%2FShanghai",
-        "root",           //user
-        "",               //password
-        "localhost:3306", //addr
-        "demo",           //database
-        "10s",            //connTimeOut
-        "9500ms",         //ReadTimeOut,
-        "9500ms",         //WriteTimeOut
-    ))
+
+    client, err := gorm.Open(
+        mysql.Open(fmt.Sprintf("%s:%s@tcp(%s)/%s?timeout=%s&readTimeout=%s&writeTimeout=%s&parseTime=True&loc=Asia%%2FShanghai",
+            "root",           //user
+            "",               //password
+            "localhost:3306", //addr
+            "demo",           //database
+            "10s",            //connTimeOut
+            "9500ms",         //ReadTimeOut,
+            "9500ms",         //WriteTimeOut
+        )),
+    )
 
     if err != nil {
         fmt.Printf("db connect error :%+v\n", err)
         return client, err
     }
 
-    client.LogMode(true)
+    sqlDB, err := client.DB()
+    if err != nil {
+        return client, err
+    }
+
+    // SetMaxIdleConns 设置空闲连接池中连接的最大数量
+    sqlDB.SetMaxIdleConns(10)
+
+    // SetMaxOpenConns 设置打开数据库连接的最大数量
+    sqlDB.SetMaxOpenConns(1000)
+
+    // SetConnMaxLifetime 设置了连接可复用的最大时间
+    sqlDB.SetConnMaxLifetime(3600*time.Second)
+
 
     return client, nil
 }

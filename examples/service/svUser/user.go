@@ -6,7 +6,7 @@ import (
     "examples/dto/dtoUser"
     "github.com/go-opener/ctxflow/layer"
     "github.com/go-opener/ctxflow/puzzle"
-    "github.com/jinzhu/gorm"
+    "gorm.io/gorm"
 )
 
 type UserService struct {

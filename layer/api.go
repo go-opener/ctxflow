@@ -43,9 +43,9 @@ var globalTransport *http.Transport
 
 func init() {
     globalTransport = &http.Transport{
-        MaxIdleConns:        300,
+        MaxIdleConns:        500,
         MaxIdleConnsPerHost: 100,
-        IdleConnTimeout:     3 * time.Second,
+        IdleConnTimeout:     300 * time.Second,
     }
 }
 
