@@ -1,4 +1,7 @@
 CtxFlow是一个轻薄的业务分层框架。
+### V2版本重要变更
+* CtxFlow从v2.x开始,全面支持gormV2,不再支持gormV1
+* dao层log简化，直接使用Flow基类提供的log输出mysql的基本信息
 
 ### 主要功能
 * 结合其他主流框架快速搭建项目
