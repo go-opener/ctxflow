@@ -10,6 +10,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-opener/ctxflow/v2 v2.0.3
 	github.com/json-iterator/go v1.1.10
+	github.com/micro/go-micro v1.18.0
 	go.uber.org/zap v1.16.0
 	gorm.io/driver/mysql v1.0.6
 	gorm.io/gorm v1.21.9

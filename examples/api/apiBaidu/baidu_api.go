@@ -1,6 +1,7 @@
 package apiBaidu
 
 import (
+    "examples/adapter"
     "github.com/go-opener/ctxflow/v2/layer"
     jsoniter "github.com/json-iterator/go"
 )
@@ -10,10 +11,14 @@ type Baidu struct {
 }
 
 func (entity *Baidu)PreUse(args ...interface{}){
-    entity.ApiConf = layer.ApiConf{
+
+    client := entity.Use(new(adapter.HttpAdapter)).(*adapter.HttpAdapter)
+    client.ApiConf = adapter.ApiConf{
         Service: "baidu",
         Domain: "http://tieba.baidu.com",
     }
+    entity.SetHTTP(client)
+
     entity.Api.PreUse(args...)
 }
 
@@ -36,5 +41,6 @@ func (entity *Baidu)GetLiveStat() (map[string]interface{}, error) {
         entity.LogWarnf("getexaminfo json unmarshal error: %v", err)
         return nil, err
     }
+
     return result, nil
 }
