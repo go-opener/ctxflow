@@ -1,17 +1,17 @@
-package domUser
+package dsUser
 
 import (
     "examples/dao/daoUser"
     "github.com/go-opener/ctxflow/v2/layer"
 )
 
-type UserDomain struct {
-    layer.Domain
+type UserRepository struct {
+    layer.DataSet
 }
 
 
 
-func (entity *UserDomain) GetUserByName(name string) (daoUser.DemoUser,error) {
+func (entity *UserRepository) GetUserByName(name string) (daoUser.DemoUser,error) {
     entity.LogInfo("this is UserDomain log")
     userDao := entity.Use(new(daoUser.DemoUserDao)).(*daoUser.DemoUserDao)
 

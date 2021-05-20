@@ -3,7 +3,7 @@ module examples
 go 1.13
 
 //如果独立运行，这一行是需要注释掉的（不注释会直接使用本地库）
-//replace github.com/go-opener/ctxflow/v2 => ../../ctxflow
+replace github.com/go-opener/ctxflow/v2 => ../../ctxflow
 
 require (
 	github.com/apache/thrift v0.12.0

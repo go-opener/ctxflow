@@ -1,7 +1,7 @@
 package svTestLog
 
 import (
-    "examples/domain/domTestLog"
+    "examples/data/dsTestLog"
     "github.com/go-opener/ctxflow/v2/layer"
 )
 
@@ -11,7 +11,7 @@ type TestLogService struct {
 
 func (entity *TestLogService) DebugFunction() string {
     entity.LogInfof("this is a Service log,service name:%+v","TestLogService")
-    testLogDomain := entity.Use(new(domTestLog.TestLogDomain)).(*domTestLog.TestLogDomain)
-    return testLogDomain.DebugFunction()
+    testLogRepo := entity.Use(new(dsTestLog.TestLogRepository)).(*dsTestLog.TestLogRepository)
+    return testLogRepo.DebugFunction()
 }
 

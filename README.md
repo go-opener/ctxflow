@@ -1,4 +1,10 @@
 CtxFlow是一个轻薄的业务分层框架。
+
+### 2021.5.20变更
+* 为了便于理解原Domain模块，更名为DataSet
+* api层依赖的http工具放入适配器中
+* example中增加adapter，用于放置适配器
+
 ### V2版本重要变更
 * CtxFlow从v2.x开始,全面支持gormV2,不再支持gormV1
 * dao层log简化，直接使用Flow基类提供的log输出mysql的基本信息

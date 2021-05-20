@@ -2,7 +2,7 @@ package svUser
 
 import (
     "examples/dao/daoUser"
-    "examples/domain/domUser"
+    "examples/data/dsUser"
     "examples/dto/dtoUser"
     "github.com/go-opener/ctxflow/v2/layer"
     "github.com/go-opener/ctxflow/v2/puzzle"
@@ -19,8 +19,8 @@ func (entity *UserService) AddUser(req *dtoUser.AddUserReq) error {
     //db关联其他模块，统一提交事务或者回滚
     db := puzzle.GetDefaultGormDb().Begin()
     //use方法的第二个参数可选，可以是db也可以是其他。如果设置为某个DB，则被这个DB关联了事务
-    userDomain := entity.Use(new(domUser.UserDomain),db).(*domUser.UserDomain)
-    usr,err:=userDomain.GetUserByName(req.Name)
+    userRepo := entity.Use(new(dsUser.UserRepository),db).(*dsUser.UserRepository)
+    usr,err:=userRepo.GetUserByName(req.Name)
 
     if err != gorm.ErrRecordNotFound {
         entity.LogWarn("用户已存在:%+v",usr)
