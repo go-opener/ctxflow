@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
-	"github.com/go-opener/ctxflow/v2/puzzle"
+	"github.com/go-opener/ctxflow/puzzle"
 )
 
 type IConsumer interface {

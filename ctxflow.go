@@ -13,9 +13,9 @@ import (
     "io/ioutil"
     "reflect"
 
-    "github.com/go-opener/ctxflow/v2/layer"
-    "github.com/go-opener/ctxflow/v2/lib/mcpack"
-    "github.com/go-opener/ctxflow/v2/puzzle"
+    "github.com/go-opener/ctxflow/layer"
+    "github.com/go-opener/ctxflow/lib/mcpack"
+    "github.com/go-opener/ctxflow/puzzle"
 )
 
 const (

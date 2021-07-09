@@ -1,6 +1,6 @@
 package dsTestLog
 
-import "github.com/go-opener/ctxflow/v2/layer"
+import "github.com/go-opener/ctxflow/layer"
 
 type TestLogRepository struct {
     layer.DataSet

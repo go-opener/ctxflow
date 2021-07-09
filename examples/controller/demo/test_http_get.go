@@ -2,7 +2,7 @@ package demo
 
 import (
     "examples/api/apiBaidu"
-    "github.com/go-opener/ctxflow/v2/layer"
+    "github.com/go-opener/ctxflow/layer"
 )
 
 type TestHttpGet struct {

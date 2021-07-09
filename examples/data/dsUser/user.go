@@ -2,7 +2,7 @@ package dsUser
 
 import (
     "examples/dao/daoUser"
-    "github.com/go-opener/ctxflow/v2/layer"
+    "github.com/go-opener/ctxflow/layer"
 )
 
 type UserRepository struct {

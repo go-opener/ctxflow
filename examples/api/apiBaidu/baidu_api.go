@@ -2,7 +2,7 @@ package apiBaidu
 
 import (
     "examples/adapter"
-    "github.com/go-opener/ctxflow/v2/layer"
+    "github.com/go-opener/ctxflow/layer"
     jsoniter "github.com/json-iterator/go"
 )
 

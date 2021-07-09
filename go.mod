@@ -1,4 +1,4 @@
-module github.com/go-opener/ctxflow/v2
+module github.com/go-opener/ctxflow
 
 go 1.13
 

@@ -8,8 +8,8 @@ import (
     "math"
     "strconv"
     "strings"
-    "github.com/go-opener/ctxflow/v2/layer"
-    "github.com/go-opener/ctxflow/v2/puzzle"
+    "github.com/go-opener/ctxflow/layer"
+    "github.com/go-opener/ctxflow/puzzle"
 )
 
 const (

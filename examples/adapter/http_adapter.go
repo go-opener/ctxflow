@@ -5,7 +5,7 @@ import (
     "context"
     "crypto/tls"
     "fmt"
-    "github.com/go-opener/ctxflow/v2/layer"
+    "github.com/go-opener/ctxflow/layer"
     "github.com/micro/go-micro/client"
     "go.uber.org/zap"
     "io"

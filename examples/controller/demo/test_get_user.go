@@ -3,7 +3,7 @@ package demo
 import (
     "examples/dao/daoUser"
     //"fmt"
-    "github.com/go-opener/ctxflow/v2/layer"
+    "github.com/go-opener/ctxflow/layer"
 )
 
 type TestGetUserList struct {

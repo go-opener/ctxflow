@@ -9,7 +9,7 @@ import (
     "net/url"
 
     "unsafe"
-    "github.com/go-opener/ctxflow/v2/puzzle"
+    "github.com/go-opener/ctxflow/puzzle"
 )
 
 
