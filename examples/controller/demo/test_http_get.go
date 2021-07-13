@@ -13,7 +13,7 @@ func (entity *TestHttpGet) Action() {
     entity.LogInfo("test TestHttpGet start")
 
     baiduApi := entity.Use(new(apiBaidu.Baidu)).(*apiBaidu.Baidu)
-    data,err := baiduApi.GetLiveStat()
+    data,err := baiduApi.TestHttpGet()
     if err != nil {
         entity.RenderJsonFail(err)
         return

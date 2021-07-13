@@ -1,12 +1,18 @@
 CtxFlow是一个轻薄的业务分层框架。
 
+### 2021.7.13变更
+* 调整了api模块中使用http客户端的方式，由直接将方法封装到api基类变成了通过adapter进行封装。使用者可以根据适配器demo实现更丰富更灵活的功能
+* 新增demo_adapter文件(里面的代码注释掉了)，用于给使用者做参考
+* tag版本由2.x变为1.10.x(因为2.x使用引用路径比较麻烦，后续将基于1.10.x向后升级，2.x版本tag仍然可用)
+* puzzle.IHttpClient不再需要
+
 ### 2021.5.20变更
 * 为了便于理解原Domain模块，更名为DataSet
 * api层依赖的http工具放入适配器中
 * example中增加adapter，用于放置适配器
 
-### V2版本重要变更
-* CtxFlow从v2.x开始,全面支持gormV2,不再支持gormV1
+### V1.10版本重要变更
+* CtxFlow从v1.10.x开始,全面支持gormV2,不再支持gormV1
 * dao层log简化，直接使用Flow基类提供的log输出mysql的基本信息
 
 ### 主要功能
