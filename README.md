@@ -57,7 +57,7 @@ curl -X POST 'http://localhost:8989/demo/testHttpGet' | jq
 * 可以通过examples/log.txt查看log
 
 ### 业务分层建议
-通常业务代码建议按照业务层次划分主要分为Controller、Service、Domain、Dao、Api等多层应用架构。
+通常业务代码建议按照业务层次划分主要分为Controller、Service、Data、Dao、Api等多层应用架构。
 
 ### Controller(控制器)
 Controller层是调度层，主要的职责是：
@@ -142,7 +142,7 @@ userService := entity.Use(new(svUser.UserService)).(*svUser.UserService)
 Service层的的代码是业务实现的主要模块，包括
 
 #### 主逻辑控制
-* 调用domain层获取数据，进行拼装业务逻辑
+* 调用data层获取数据，进行拼装业务逻辑
 * 对最终的结果负责
 
 #### Service层的主要执行原理
@@ -156,18 +156,18 @@ Service层的的代码是业务实现的主要模块，包括
 * req结构体只可以在这一层和 Controller层出现
 * 可以通过entity.Use的第二个（或以上）参数扩展传递，并且这些参数在被use的模块中是可继承的
 
-### Domain(领域层)
-Domain层的代码是针对对象个体实现的层，主要功能是
+### Data
+Data层的代码是针对对象个体实现的层，主要功能是
 
-* 能够抽象的最细颗粒度对象的实现放在Domain层
+* 能够抽象的最细颗粒度对象的实现放在Data层
 
 
-### Domain层编码规范建议
+### Data层编码规范建议
 
 * 需要使用entity.Use进行初始化，和初始化使用的其他模块
-* 最细粒度对象的实现放在Domain层
-* 需要以结构体对象的方式声明Domain,Domain需要继承于BaseDomain
-* domain层的包名以dom前缀开头
+* 最细粒度对象的实现放在Data层
+* 需要以结构体对象的方式声明Data,Data需要继承于layer.DataSet
+* Data层的包名以ds前缀开头
 * req结构体不可以传入到该层
 * 可以通过entity.Use的第二个（或以上）参数扩展传递，并且这些参数在被use的模块中是可继承的
 
@@ -196,9 +196,9 @@ dao层主要是对数据库操作的封装，与Api层封装相对应
 * dao层的包名以dao前缀开头
 * 全局事务的使用，使用全局事务可以在逻辑中先声明好db对象，如
 db := puzzle.GetDefaultGormDb().Begin()
-* 然后entity.Use模块的时候将该db传入（第二个参数）。Use的模块可以是任何模块（包括Service,Domain,Dao等）。当这个模块里使用了Dao层的时候，会自动使用这个db，然后逻辑里就可以使用这个db进行统一的提交和回滚操作了。
+* 然后entity.Use模块的时候将该db传入（第二个参数）。Use的模块可以是任何模块（包括Service,Data,Dao等）。当这个模块里使用了Dao层的时候，会自动使用这个db，然后逻辑里就可以使用这个db进行统一的提交和回滚操作了。
 
-db使用的优先级--假如依赖关系是A(Service)->B(Domain)->C(Dao),既A中通过Use使用了B,B中通过Use使用了C。那么最后C执行的时候会是这样：
+db使用的优先级--假如依赖关系是A(Service)->B(Data)->C(Dao),既A中通过Use使用了B,B中通过Use使用了C。那么最后C执行的时候会是这样：
 1.如果只有在A  use B的时候传入了db1,则最终C中执行的是db1这个gorm.DB对象
 2.如果步骤1中，A  use B的时候传入了db1,同时B use C中传入了db2,则最终C中执行的是db2这个gorm.DB对象，遵循最近的db最优先的原则。
 
@@ -207,8 +207,8 @@ db使用的优先级--假如依赖关系是A(Service)->B(Domain)->C(Dao),既A中
     //db关联其他模块，统一提交事务或者回滚
     db := puzzle.GetDefaultGormDb().Begin()
     //use方法的第二个参数可选，可以是db也可以是其他。如果设置为某个DB，则被这个DB关联了事务
-    userDomain := entity.Use(new(domUser.UserDomain),db).(*domUser.UserDomain)
-    usr,err:=userDomain.GetUserByName(req.Name)
+    userData := entity.Use(new(dsUser.UserRepository),db).(*dsUser.UserRepository)
+    usr,err:=userData.GetUserByName(req.Name)
 
     if err != gorm.ErrRecordNotFound {
         entity.LogWarn("用户已存在:%+v",usr)
