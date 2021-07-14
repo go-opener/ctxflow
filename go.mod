@@ -13,4 +13,5 @@ require (
 	go.uber.org/zap v1.16.0
 	gopkg.in/go-playground/validator.v9 v9.31.0
 	gorm.io/gorm v1.21.6
+	github.com/micro/go-micro v1.18.0
 )
