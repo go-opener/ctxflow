@@ -1,4 +1,4 @@
-// package adapter
+package adapter
 //
 // import (
 //     "encoding/json"
