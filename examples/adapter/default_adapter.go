@@ -18,7 +18,9 @@ type DefaultAdapter struct {
 
 func (entity *DefaultAdapter) PreUse(args ...interface{}) {
     entity.HttpClient = entity.Use(new(httpClient.HttpClient)).(*httpClient.HttpClient)
-    entity.HttpClient.ApiConf = args[0].(httpClient.ApiConf)
+    if len(args) > 0 {
+        entity.HttpClient.ApiConf = args[0].(httpClient.ApiConf)
+    }
     entity.Flow.PreUse(args...)
 }
 

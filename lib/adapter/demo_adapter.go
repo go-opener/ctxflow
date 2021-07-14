@@ -13,7 +13,9 @@ package adapter
 // }
 //
 // func (entity *ApiClientAdapter) PreUse(args ...interface{}) {
-//     entity.ApiClient = args[0].(*base.ApiClient)
+//     if len(args) > 0 {
+//         entity.ApiClient = args[0].(*base.ApiClient)
+//     }
 //     entity.Flow.PreUse(args...)
 // }
 //
