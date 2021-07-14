@@ -1,5 +1,9 @@
 CtxFlow是一个轻薄的业务分层框架。
 
+### 2021.7.14变更
+* 提供了统一的初始化方法puzzle.InitConfig(请参考examples)
+* 初始化时支持忽略DbLog的默认格式化方式(IgnoreDefaultDBLogFormat)，原因是有些框架会在gorm底层提供默认的格式化方式
+
 ### 2021.7.13变更
 * 调整了api模块中使用http客户端的方式，由直接将方法封装到api基类变成了通过adapter进行封装。使用者可以根据适配器demo实现更丰富更灵活的功能
 * 新增demo_adapter文件(里面的代码注释掉了)，用于给使用者做参考
