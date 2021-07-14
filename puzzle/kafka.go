@@ -6,6 +6,7 @@ type IKafka sarama.ConsumerGroup
 
 var KafkaClient IKafka
 
+//deprecated
 func SetKafkaClient(client IKafka) {
     KafkaClient = client
 }

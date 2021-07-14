@@ -35,6 +35,7 @@ type LogCtx struct {
     LocalIp string
 }
 
+//deprecated
 func SetDefaultSugaredLogger(loger *zap.SugaredLogger) {
     DefaultSugaredLogger = loger
 }
@@ -103,6 +104,7 @@ func genRequestId() (requestId string) {
     return requestId
 }
 
+//deprecated
 func SetAppName(appName string){
     AppName = appName
 }
@@ -111,6 +113,7 @@ func GetAppName() string{
     return AppName
 }
 
+//deprecated
 func SetLocalIp(localIp string){
     LocalIp = localIp
 }

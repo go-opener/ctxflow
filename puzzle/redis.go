@@ -8,6 +8,7 @@ type IRedis interface {
 
 var RedisClient IRedis
 
+//deprecated
 func SetRedisClient(client IRedis) {
     RedisClient = client
 }

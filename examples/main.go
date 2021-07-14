@@ -20,10 +20,12 @@ func main() {
     sLogger := getSugarLoger()
     dbClient, _ := getDBClient(sLogger)
     //设置LOG对象
-    puzzle.SetDefaultSugaredLogger(sLogger) //设置Loger糖
-    puzzle.SetDefaultGormDb(dbClient)       //设置db客户端
-    puzzle.SetAppName("demo")      //设置应用微服务名称
-    puzzle.SetLocalIp("127.0.0.1")   //设置本机IP
+    puzzle.InitConfig(puzzle.Config{
+        DefaultSugaredLogger: sLogger,
+        MysqlClient:dbClient,
+        AppName: "demo",
+        LocalIP: "127.0.0.1",
+    })
 
     demoGroup := engine.Group("/demo")
     {

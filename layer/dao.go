@@ -53,10 +53,11 @@ func (entity *Dao) GetDB(args ...string) *gorm.DB {
     db := entity.db.WithContext(entity.GetContext()).Table(entity.GetTable()+parStr)
 
     entity.LogInfof("db:%+v",db.Logger)
-
-    db.Logger = logger.New(entity,logger.Config{
-       LogLevel: logger.Info,
-    })
+    if !puzzle.IgnoreDefaultDBLogFormat {
+        db.Logger = logger.New(entity,logger.Config{
+            LogLevel: logger.Info,
+        })
+    }
     return db
 }
 
