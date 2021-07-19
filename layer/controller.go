@@ -139,7 +139,7 @@ func (entity *Controller) RenderJsonFail(err error) {
     //    StackLogger(entity.GetContext(), err)
     //}
 
-    entity.Info(err)
+    entity.LogInfo(err)
     renderJson := ErrorToRanderJson(err)
     renderJson.Data = gin.H{}
     entity.GetContext().JSON(http.StatusOK, renderJson)
@@ -152,7 +152,7 @@ func (entity *Controller) RenderJsonSucc(data interface{}) {
 }
 
 func (entity *Controller) RenderJsonAbort(err error) {
-    entity.Info(err)
+    entity.LogInfo(err)
     renderJson := ErrorToRanderJson(err)
     entity.GetContext().AbortWithStatusJSON(http.StatusOK, renderJson)
 }
@@ -165,7 +165,7 @@ func (entity *Controller) RenderHttpError(errNo int, errDetail ...interface{}) {
         }
     }
 
-    entity.Info(errDetail)
+    entity.LogInfo(errDetail)
     body := gin.H{"errNo": errNo, "errStr": errStr, "data": map[string]interface{}{}, "errDetail": errDetail}
     data, _ := jsoniter.Marshal(body)
     entity.GetContext().String(NmqResponseStatusCodeError, toString(data))
