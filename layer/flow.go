@@ -23,7 +23,7 @@ type IFlow interface {
 
 
 type Flow struct {
-    zap.SugaredLogger
+    //zap.SugaredLogger
     ctx  *gin.Context
     log  *zap.SugaredLogger
     logS *puzzle.LogCtx
