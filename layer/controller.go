@@ -112,6 +112,7 @@ func ErrorToRanderJson(err error) puzzle.DefaultRender{
         }else {
             renderJson.ErrMsg = err.Error()
         }
+
     }else if reflect.TypeOf(err).Kind() == reflect.Struct {
         n := reflect.ValueOf(err).FieldByName("ErrNo")
         if n.Kind() != reflect.Invalid {
@@ -129,7 +130,10 @@ func ErrorToRanderJson(err error) puzzle.DefaultRender{
         }else {
             renderJson.ErrMsg = err.Error()
         }
-    }
+    }else{
+		renderJson.ErrNo = 9999
+		renderJson.ErrMsg = fmt.Sprintf("%+v",err)
+	}
     return renderJson
 }
 
