@@ -8,7 +8,7 @@ replace github.com/go-opener/ctxflow => ../../ctxflow
 require (
 	github.com/apache/thrift v0.12.0
 	github.com/gin-gonic/gin v1.6.3
-	github.com/go-opener/ctxflow v1.10.1
+	github.com/go-opener/ctxflow v1.10.2
 	github.com/json-iterator/go v1.1.10
 	github.com/micro/go-micro v1.18.0
 	go.uber.org/zap v1.16.0
