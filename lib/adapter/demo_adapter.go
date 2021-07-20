@@ -30,13 +30,13 @@ package adapter
 // func (entity *ApiClientAdapter) DecodeResponse(res *base.ApiResult, output interface{}) (errno int, err error) {
 //     var r base.DefaultRender
 //     if err = json.Unmarshal(res.Response, &r); err != nil {
-//         entity.Errorf("http response decode err, err: %s", res.Response)
+//         entity.LogErrorf("http response decode err, err: %s", res.Response)
 //         return errno, err
 //     }
 //
 //     errno = r.ErrNo
 //     if r.ErrNo != 0 {
-//         entity.Errorf( "http response code: %d", r.ErrNo)
+//         entity.LogErrorf( "http response code: %d", r.ErrNo)
 //         return errno, err
 //     }
 //
@@ -45,7 +45,7 @@ package adapter
 //     }
 //
 //     if err := mapstructure.Decode(r.Data, &output); err != nil {
-//         entity.Warnf( "api call data decode error: %s", err.Error())
+//         entity.LogWarnf( "api call data decode error: %s", err.Error())
 //         return errno, err
 //     }
 //
