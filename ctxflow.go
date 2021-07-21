@@ -147,6 +147,26 @@ func UseTask(task layer.ITask) func(cmd *cobra.Command, args []string) {
     }
 }
 
+func MakeFlow() *layer.Flow{
+    ctx := &gin.Context{}
+    flow := new(layer.Flow)
+    flow = flow.SetContext(ctx)
+    logCtx := puzzle.LogCtx{
+        LogId:   puzzle.GetLogID(ctx),
+        ReqId:   puzzle.GetRequestID(ctx),
+        AppName: puzzle.GetAppName(),
+        LocalIp: puzzle.GetLocalIp(),
+    }
+    flow.SetLogCtx(&logCtx)
+    flow.SetLog(puzzle.GetDefaultSugaredLogger().With(
+        zap.String("logId", logCtx.LogId),
+        zap.String("requestId", logCtx.ReqId),
+        zap.String("module", logCtx.AppName),
+        zap.String("localIp", logCtx.LocalIp),
+    ))
+    return flow
+}
+
 func UseKFKConsumer(consumer layer.IConsumer) func(cmd *cobra.Command, args []string) {
     return func(cmd *cobra.Command, args []string) {
         ctx := &gin.Context{}
