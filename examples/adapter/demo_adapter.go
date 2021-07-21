@@ -52,3 +52,18 @@ package adapter
 //     return errno, nil
 // }
 //
+// func (entity *ApiClientAdapter) DecodeResponseSimple(res *base.ApiResult) (result interface{},errno int, err error) {
+// 	var r base.DefaultRender
+// 	if err = json.Unmarshal(res.Response, &r); err != nil {
+// 		entity.LogErrorf("http response decode err, err: %s", res.Response)
+// 		return nil, errno, err
+// 	}
+//
+// 	errno = r.ErrNo
+// 	if r.ErrNo != 0 {
+// 		entity.LogErrorf( "http response code: %d", r.ErrNo)
+// 		return nil,errno, err
+// 	}
+//
+// 	return r.Data,errno, nil
+// }
