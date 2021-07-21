@@ -147,8 +147,10 @@ func UseTask(task layer.ITask) func(cmd *cobra.Command, args []string) {
     }
 }
 
-func MakeFlow() *layer.Flow{
-    ctx := &gin.Context{}
+func MakeFlow(ctx *gin.Context) *layer.Flow{
+    if ctx == nil {
+        ctx = &gin.Context{}
+    }
     flow := new(layer.Flow)
     flow = flow.SetContext(ctx)
     logCtx := puzzle.LogCtx{
