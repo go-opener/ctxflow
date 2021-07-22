@@ -44,7 +44,7 @@ func UseController(controller layer.IController) func(ctx *gin.Context) {
     return func(ctx *gin.Context) {
         ctl := Slave(controller).(layer.IController)
 
-        ctl = InitFlow(ctx,ctl).(layer.IController)
+        InitFlow(ctx,ctl)
 
         defer NoPanicContorller(ctl)
 
@@ -116,7 +116,7 @@ func UseTask(task layer.ITask) func(cmd *cobra.Command, args []string) {
         ctx := &gin.Context{}
         task2 := Slave(task).(layer.ITask)
 
-        task2 = InitFlow(ctx,task2).(layer.ITask)
+        InitFlow(ctx,task2)
 
         task2.PreUse()
         task2.Run(args)
@@ -128,11 +128,11 @@ func MakeFlow(ctx *gin.Context) *layer.Flow{
         ctx = &gin.Context{}
     }
     flow := new(layer.Flow)
-    flow = InitFlow(ctx,flow).(*layer.Flow)
+    InitFlow(ctx,flow)
     return flow
 }
 
-func InitFlow(ctx *gin.Context,flow layer.IFlow)layer.IFlow{
+func InitFlow(ctx *gin.Context,flow layer.IFlow){
     flow = flow.SetContext(ctx)
     logCtx := puzzle.LogCtx{
         LogId:   puzzle.GetLogID(ctx),
@@ -147,14 +147,13 @@ func InitFlow(ctx *gin.Context,flow layer.IFlow)layer.IFlow{
         zap.String("module", logCtx.AppName),
         zap.String("localIp", logCtx.LocalIp),
     ))
-    return flow
 }
 
 func UseKFKConsumer(consumer layer.IConsumer) func(cmd *cobra.Command, args []string) {
     return func(cmd *cobra.Command, args []string) {
         ctx := &gin.Context{}
         consumer2 := Slave(consumer).(layer.IConsumer)
-        consumer2 = InitFlow(ctx,consumer2).(layer.IConsumer)
+        InitFlow(ctx,consumer2)
         consumer2.PreUse()
         consumer2.Run(args)
     }
@@ -164,7 +163,7 @@ func UseNMQ(nmqMap map[string]reflect.Type) func(ctx *gin.Context) {
     return func(ctx *gin.Context) {
         controller := new(layer.Flow).SetContext(ctx).Use(new(layer.Controller)).(*layer.Controller)
 
-        controller = InitFlow(ctx,controller).(*layer.Controller)
+        InitFlow(ctx,controller)
 
         cmdNo := ctx.Query("cmdno")
         if cmdNo == "" {
@@ -191,7 +190,7 @@ func UseNMQ(nmqMap map[string]reflect.Type) func(ctx *gin.Context) {
         param, err := json.Marshal(consumer)
         controller.LogInfof("[nmqservice] [commit] [Cmdno:%s] [Transid:%s] [RequestParam:%s] [Err:%v]", cmdNo, ctx.Query("transid"), string(param), err)
 
-        consumer = InitFlow(ctx,consumer).(layer.INMQConsumer)
+        InitFlow(ctx,consumer)
 
         consumer.PreUse()
         //do
