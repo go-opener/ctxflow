@@ -24,7 +24,7 @@ const (
     NMQ_SUC_CONTINUE = 200  //处理成功，ticker继续执行
 )
 
-func slave(src interface{}) interface{} {
+func Slave(src interface{}) interface{} {
     typ := reflect.TypeOf(src)
     if typ.Kind() == reflect.Ptr { //如果是指针类型
         typ = typ.Elem()                          //获取源实际类型(否则为指针类型)
@@ -42,22 +42,9 @@ func slave(src interface{}) interface{} {
 
 func UseController(controller layer.IController) func(ctx *gin.Context) {
     return func(ctx *gin.Context) {
-        ctl := slave(controller).(layer.IController)
-        ctl.SetContext(ctx)
+        ctl := Slave(controller).(layer.IController)
 
-        logCtx := puzzle.LogCtx{
-            LogId: puzzle.GetLogID(ctx),
-            ReqId: puzzle.GetRequestID(ctx),
-            AppName: puzzle.GetAppName(),
-            LocalIp: puzzle.GetLocalIp(),
-        }
-        ctl.SetLogCtx(&logCtx)
-        ctl.SetLog(puzzle.GetDefaultSugaredLogger().With(
-            zap.String("logId", logCtx.LogId),
-            zap.String("requestId", logCtx.ReqId),
-            zap.String("module", logCtx.AppName),
-            zap.String("localIp", logCtx.LocalIp),
-        ))
+        ctl = InitFlow(ctx,ctl).(layer.IController)
 
         defer NoPanicContorller(ctl)
 
@@ -127,21 +114,10 @@ func PanicTrace(kb int) []byte {
 func UseTask(task layer.ITask) func(cmd *cobra.Command, args []string) {
     return func(cmd *cobra.Command, args []string) {
         ctx := &gin.Context{}
-        task2 := slave(task).(layer.ITask)
-        task2.SetContext(ctx)
-        logCtx := puzzle.LogCtx{
-            LogId:   puzzle.GetLogID(ctx),
-            ReqId:   puzzle.GetRequestID(ctx),
-            AppName: puzzle.GetAppName(),
-            LocalIp: puzzle.GetLocalIp(),
-        }
-        task2.SetLogCtx(&logCtx)
-        task2.SetLog(puzzle.GetDefaultSugaredLogger().With(
-            zap.String("logId", logCtx.LogId),
-            zap.String("requestId", logCtx.ReqId),
-            zap.String("module", logCtx.AppName),
-            zap.String("localIp", logCtx.LocalIp),
-        ))
+        task2 := Slave(task).(layer.ITask)
+
+        task2 = InitFlow(ctx,task2).(layer.ITask)
+
         task2.PreUse()
         task2.Run(args)
     }
@@ -152,6 +128,11 @@ func MakeFlow(ctx *gin.Context) *layer.Flow{
         ctx = &gin.Context{}
     }
     flow := new(layer.Flow)
+    flow = InitFlow(ctx,flow).(*layer.Flow)
+    return flow
+}
+
+func InitFlow(ctx *gin.Context,flow layer.IFlow)layer.IFlow{
     flow = flow.SetContext(ctx)
     logCtx := puzzle.LogCtx{
         LogId:   puzzle.GetLogID(ctx),
@@ -172,21 +153,8 @@ func MakeFlow(ctx *gin.Context) *layer.Flow{
 func UseKFKConsumer(consumer layer.IConsumer) func(cmd *cobra.Command, args []string) {
     return func(cmd *cobra.Command, args []string) {
         ctx := &gin.Context{}
-        consumer2 := slave(consumer).(layer.IConsumer)
-        consumer2.SetContext(ctx)
-        logCtx := puzzle.LogCtx{
-            LogId: puzzle.GetLogID(ctx),
-            ReqId: puzzle.GetRequestID(ctx),
-            AppName: puzzle.GetAppName(),
-            LocalIp: puzzle.GetLocalIp(),
-        }
-        consumer2.SetLogCtx(&logCtx)
-        consumer2.SetLog(puzzle.GetDefaultSugaredLogger().With(
-            zap.String("logId", logCtx.LogId),
-            zap.String("requestId", logCtx.ReqId),
-            zap.String("module", logCtx.AppName),
-            zap.String("localIp", logCtx.LocalIp),
-        ))
+        consumer2 := Slave(consumer).(layer.IConsumer)
+        consumer2 = InitFlow(ctx,consumer2).(layer.IConsumer)
         consumer2.PreUse()
         consumer2.Run(args)
     }
@@ -195,19 +163,8 @@ func UseKFKConsumer(consumer layer.IConsumer) func(cmd *cobra.Command, args []st
 func UseNMQ(nmqMap map[string]reflect.Type) func(ctx *gin.Context) {
     return func(ctx *gin.Context) {
         controller := new(layer.Flow).SetContext(ctx).Use(new(layer.Controller)).(*layer.Controller)
-        logCtx := puzzle.LogCtx{
-            LogId: puzzle.GetLogID(ctx),
-            ReqId: puzzle.GetRequestID(ctx),
-            AppName: puzzle.GetAppName(),
-            LocalIp: puzzle.GetLocalIp(),
-        }
-        controller.SetLogCtx(&logCtx)
-        controller.SetLog(puzzle.GetDefaultSugaredLogger().With(
-            zap.String("logId", logCtx.LogId),
-            zap.String("requestId", logCtx.ReqId),
-            zap.String("module", logCtx.AppName),
-            zap.String("localIp", logCtx.LocalIp),
-        ))
+
+        controller = InitFlow(ctx,controller).(*layer.Controller)
 
         cmdNo := ctx.Query("cmdno")
         if cmdNo == "" {
@@ -225,7 +182,6 @@ func UseNMQ(nmqMap map[string]reflect.Type) func(ctx *gin.Context) {
 
         var consumer = reflect.New(nmqType).Elem().Addr().Interface().(layer.INMQConsumer)
 
-        //todo 这里需要确认，不确认interface类型会不会正常解析json
         rawData, _ := ioutil.ReadAll(ctx.Request.Body)
         if err := mcpack.Unmarshal(rawData, consumer); err != nil {
             controller.LogErrorf("[nmqservice] [commit] [mcpack param unmashall error] [CmdNo:%v] [Err:%v] [data:%s]", cmdNo, err, rawData)
@@ -235,14 +191,8 @@ func UseNMQ(nmqMap map[string]reflect.Type) func(ctx *gin.Context) {
         param, err := json.Marshal(consumer)
         controller.LogInfof("[nmqservice] [commit] [Cmdno:%s] [Transid:%s] [RequestParam:%s] [Err:%v]", cmdNo, ctx.Query("transid"), string(param), err)
 
-        consumer.SetContext(ctx)
-        consumer.SetLogCtx(&logCtx)
-        consumer.SetLog(puzzle.GetDefaultSugaredLogger().With(
-            zap.String("logId", logCtx.LogId),
-            zap.String("requestId", logCtx.ReqId),
-            zap.String("module", logCtx.AppName),
-            zap.String("localIp", logCtx.LocalIp),
-        ))
+        consumer = InitFlow(ctx,consumer).(layer.INMQConsumer)
+
         consumer.PreUse()
         //do
         d1, proErr := consumer.Process()
