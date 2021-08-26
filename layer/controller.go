@@ -170,7 +170,7 @@ func (entity *Controller) RenderHttpError(errNo int, errDetail ...interface{}) {
     }
 
     entity.LogInfo(errDetail)
-    body := gin.H{"errNo": errNo, "errStr": errStr, "data": map[string]interface{}{}, "errDetail": errDetail}
+    body := gin.H{"errNo": errNo,"errStr": errStr, "errMsg": errStr, "data": map[string]interface{}{}, "errDetail": errDetail}
     data, _ := jsoniter.Marshal(body)
     entity.GetContext().String(NmqResponseStatusCodeError, toString(data))
 }
