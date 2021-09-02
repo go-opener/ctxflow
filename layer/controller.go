@@ -72,6 +72,10 @@ func (entity *Controller) BindParamError(req interface{}) error {
 
     for key,val := range defaultMap{
 
+        if _,ok := outMap[key];!ok{
+            continue
+        }
+
         if reflect.TypeOf(outMap[key]).Kind() != reflect.Ptr {
             continue
         }
