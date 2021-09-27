@@ -30,7 +30,7 @@ func (entity *UserService) AddUser(req *dtoUser.AddUserReq) error {
 
     //use方法的第二个参数可选，可以是db也可以是其他。如果设置为某个DB，则被这个DB关联了事务
     userDao := entity.Use(new(daoUser.DemoUserDao),db).(*daoUser.DemoUserDao)
-    err = userDao.Create(&daoUser.DemoUser{
+    err = userDao.Create(&daoUser.DemoUserDao{
         Name: req.Name,
         Age:*req.Age,
     })

@@ -21,13 +21,12 @@ type IFlow interface {
     SetLog(log *zap.SugaredLogger) *Flow
 }
 
-
 type Flow struct {
     //zap.SugaredLogger
-    ctx  *gin.Context
-    log  *zap.SugaredLogger
-    logS *puzzle.LogCtx
-    args []interface{}
+    ctx  *gin.Context       `gorm:"-"`
+    log  *zap.SugaredLogger `gorm:"-"`
+    logS *puzzle.LogCtx     `gorm:"-"`
+    args []interface{}      `gorm:"-"`
 }
 
 //参数为Use的可选参数部分

@@ -11,7 +11,7 @@ type UserRepository struct {
 
 
 
-func (entity *UserRepository) GetUserByName(name string) (daoUser.DemoUser,error) {
+func (entity *UserRepository) GetUserByName(name string) (daoUser.DemoUserDao,error) {
     entity.LogInfo("this is UserDomain log")
     userDao := entity.Use(new(daoUser.DemoUserDao)).(*daoUser.DemoUserDao)
 

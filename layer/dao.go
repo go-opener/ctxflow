@@ -21,16 +21,19 @@ type IDao interface {
     SetDB(db *gorm.DB)
     SetTable(tableName string)
     GetTable() string
+    SetModel(model interface{})
+    GetModel() interface{}
 }
 
 type Dao struct {
     Flow
-    db        *gorm.DB
-    tableName string
+    db        *gorm.DB    `gorm:"-"`
+    tableName string      `gorm:"-"`
+    model     interface{} `gorm:"-"`
 }
 
 func (entity *Dao) Printf(msg string, args ...interface{}) {
-    entity.LogInfo(fmt.Sprintf(msg,args...))
+    entity.LogInfo(fmt.Sprintf(msg, args...))
 }
 
 //默认第一个参数为db,可利用该特性批量处理事务
@@ -45,16 +48,21 @@ func (entity *Dao) PreUse(args ...interface{}) {
 
 func (entity *Dao) GetDB(args ...string) *gorm.DB {
     var parStr string
-    if len(args) > 0{
+    if len(args) > 0 {
         parStr = args[0]
-    }else {
+    } else {
         parStr = ""
     }
-    db := entity.db.WithContext(entity.GetContext()).Table(entity.GetTable()+parStr)
+    db := entity.db.WithContext(entity.GetContext())
+    if entity.GetTable() != "" {
+        db = db.Table(entity.GetTable() + parStr)
+    } else {
+        db = db.Model(entity.GetModel())
+    }
 
-    entity.LogInfof("db:%+v",db.Logger)
+    //entity.LogInfof("db:%+v", db.Logger)
     if !puzzle.IgnoreDefaultDBLogFormat {
-        db.Logger = logger.New(entity,logger.Config{
+        db.Logger = logger.New(entity, logger.Config{
             LogLevel: logger.Info,
         })
     }
@@ -71,17 +79,26 @@ func (entity *Dao) SetDB(db *gorm.DB) {
 
 }
 
+//deprecated
 func (entity *Dao) SetTable(tableName string) {
     entity.tableName = tableName
-
 }
 
+//deprecated
 func (entity *Dao) GetTable() string {
     return entity.tableName
 }
 
+func (entity *Dao) SetModel(model interface{}) {
+    entity.model = model
+}
+
+func (entity *Dao) GetModel() interface{} {
+    return entity.model
+}
+
 // Update selected Fields, if attrs is an object, it will ignore default value field; if attrs is map, it will ignore unchanged field.
-func (entity *Dao) Update(model interface{},attrs interface{}, query interface{}, args ...interface{}) error {
+func (entity *Dao) Update(model interface{}, attrs interface{}, query interface{}, args ...interface{}) error {
     var err error
     db := entity.GetDB().Model(model).Where(query, args...).Updates(attrs)
 

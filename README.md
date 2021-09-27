@@ -1,5 +1,7 @@
 CtxFlow是一个轻薄的业务分层框架。
 
+### 2021.9.27变更
+* Dao层提供了SetModel、GetModel方法，可用于替换原来的SetTable
 
 ### 2021.7.14变更
 * 提供了统一的初始化方法puzzle.InitConfig(请参考examples)
