@@ -7,7 +7,6 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/json-iterator/go v1.1.10
-	github.com/micro/go-micro v1.18.0
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.1.1
